@@ -56,8 +56,8 @@ public class ReadNewsActivity extends AppCompatActivity {
         btntop = (Button) findViewById(R.id.btntop);
 
         setNewsString.setContent(contents);
-        String[] newsContents = setNewsString.getContent();
-        count = setNewsString.getCount();
+        String[] newsContents = setNewsString.newsContents;
+        count = setNewsString.count;
 
         newstext1.setText(newsContents[0]);
         newstext2.setText(newsContents[1]);
