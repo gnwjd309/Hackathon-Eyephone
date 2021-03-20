@@ -2,9 +2,16 @@ package com.example.eyephone_project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.PaintDrawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,7 +36,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
+        int pos = position;
         final Context context = parent.getContext();
 
         if (convertView == null) {
@@ -37,7 +44,20 @@ public class ListViewAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.listview_item, parent, false);
         }
 
+        TranslateAnimation translateAnimation = new TranslateAnimation(300, 0, 0, 0);
+        Animation alphaAnimation = new AlphaAnimation(0, 1);
+        translateAnimation.setDuration(500);
+        alphaAnimation.setDuration(1300);
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(translateAnimation);
+        animation.addAnimation(alphaAnimation);
+        convertView.setAnimation(animation);
+
         titleTextView = (TextView) convertView.findViewById(R.id.newstitle);
+        titleTextView.getShadowRadius();
+        //titleTextView.setSingleLine(true);
+        //titleTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        //titleTextView.setSelected(true);
 
         ListViewItem listViewItem = listViewItemList.get(position);
 
@@ -49,6 +69,8 @@ public class ListViewAdapter extends BaseAdapter {
                 Toast.makeText(v.getContext(), "key value : " + keyvalue[pos], Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(v.getContext(), ReadNewsActivity.class);
                 intent.putExtra("key", keyvalue[pos]);
+                //v.setBackgroundColor(Color.parseColor("#D5D5D5"));
+
                 v.getContext().startActivity(intent);
             }
         });

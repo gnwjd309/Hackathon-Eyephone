@@ -9,12 +9,20 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Magnifier;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +37,10 @@ public class ReadNewsActivity extends AppCompatActivity {
     //private String[] keyvalue;
     static private String keyvalue;
 
-    setNewsString setnewsstring = new setNewsString();
+    Animation tranlateUp;
+    Animation tranlateDown;
+    LinearLayout page;
+    //boolean isPageOpen = false;
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -54,6 +65,10 @@ public class ReadNewsActivity extends AppCompatActivity {
 
         btnbottom = (Button) findViewById(R.id.btnbottom);
         btntop = (Button) findViewById(R.id.btntop);
+        page = findViewById(R.id.page);
+
+        tranlateUp = AnimationUtils.loadAnimation(this,R.anim.anim_up);
+        tranlateDown = AnimationUtils.loadAnimation(this,R.anim.anim_down);
 
         setNewsString.setContent(contents);
         String[] newsContents = setNewsString.newsContents;
@@ -69,6 +84,10 @@ public class ReadNewsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(count1 > 0) {
+                    page.startAnimation(tranlateUp);
+                    //fadeOutView();
+                    page.setVisibility(View.VISIBLE);
+
                     count1 = count1 - 5;
                     newstext1.setText(newsContents[count1]);
                     newstext2.setText(newsContents[count1+1]);
@@ -76,20 +95,20 @@ public class ReadNewsActivity extends AppCompatActivity {
                     newstext4.setText(newsContents[count1+3]);
                     newstext5.setText(newsContents[count1+4]);
 
-                    newstext1.setTextSize(24);
-                    newstext2.setTextSize(24);
-                    newstext3.setTextSize(24);
-                    newstext4.setTextSize(24);
-                    newstext5.setTextSize(24);
+                    newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+                    newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
                 }
                 else if(count1 == 0){ //if(count == 0){
                     Toast.makeText(getApplicationContext(), "처음 글입니다.", Toast.LENGTH_SHORT).show();
 
-                    newstext1.setTextSize(24);
-                    newstext2.setTextSize(24);
-                    newstext3.setTextSize(24);
-                    newstext4.setTextSize(24);
-                    newstext5.setTextSize(24);
+                    newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
                 }
             }
         });
@@ -98,6 +117,9 @@ public class ReadNewsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(count1 < count-5) {
+                    page.startAnimation(tranlateDown);
+                    page.setVisibility(View.VISIBLE);
+
                     count1 = count1 + 5;
                     newstext1.setText(newsContents[count1+1]);
                     newstext2.setText(newsContents[count1+2]);
@@ -105,19 +127,19 @@ public class ReadNewsActivity extends AppCompatActivity {
                     newstext4.setText(newsContents[count1+4]);
                     newstext5.setText(newsContents[count1+5]);
 
-                    newstext1.setTextSize(24);
-                    newstext2.setTextSize(24);
-                    newstext3.setTextSize(24);
-                    newstext4.setTextSize(24);
-                    newstext5.setTextSize(24);
+                    newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+                    newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
                 }
 
                 else {//if (count >= newsArray.length-1){
-                    newstext1.setTextSize(24);
-                    newstext2.setTextSize(24);
-                    newstext3.setTextSize(24);
-                    newstext4.setTextSize(24);
-                    newstext5.setTextSize(24);
+                    newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                    newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
 
                     Toast.makeText(getApplicationContext(), "마지막 글입니다.", Toast.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(), "목록으로 돌아갑니다.", Toast.LENGTH_SHORT).show();
@@ -132,11 +154,11 @@ public class ReadNewsActivity extends AppCompatActivity {
         newstext1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newstext1.setTextSize(33);
-                newstext2.setTextSize(24);
-                newstext3.setTextSize(24);
-                newstext4.setTextSize(24);
-                newstext5.setTextSize(24);
+                newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP,30);
+                newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
             }
         });
         newstext1.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
@@ -172,11 +194,11 @@ public class ReadNewsActivity extends AppCompatActivity {
         newstext2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newstext1.setTextSize(24);
-                newstext2.setTextSize(30);
-                newstext3.setTextSize(24);
-                newstext4.setTextSize(24);
-                newstext5.setTextSize(24);
+                newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,30);
+                newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
             }
         });
         newstext2.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
@@ -212,11 +234,11 @@ public class ReadNewsActivity extends AppCompatActivity {
         newstext3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newstext1.setTextSize(24);
-                newstext2.setTextSize(24);
-                newstext3.setTextSize(30);
-                newstext4.setTextSize(24);
-                newstext5.setTextSize(24);
+                newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,30);
+                newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
             }
         });
         newstext3.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
@@ -252,11 +274,11 @@ public class ReadNewsActivity extends AppCompatActivity {
         newstext4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newstext1.setTextSize(24);
-                newstext2.setTextSize(24);
-                newstext3.setTextSize(24);
-                newstext4.setTextSize(30);
-                newstext5.setTextSize(24);
+                newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,30);
+                newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
             }
         });
         newstext4.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
@@ -292,11 +314,11 @@ public class ReadNewsActivity extends AppCompatActivity {
         newstext5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newstext1.setTextSize(24);
-                newstext2.setTextSize(24);
-                newstext3.setTextSize(24);
-                newstext4.setTextSize(24);
-                newstext5.setTextSize(30);
+                newstext1.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext3.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext4.setTextSize(TypedValue.COMPLEX_UNIT_DIP,24);
+                newstext5.setTextSize(TypedValue.COMPLEX_UNIT_DIP,30);
             }
         });
         newstext5.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
@@ -328,5 +350,18 @@ public class ReadNewsActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public void fadeOutView(){
+        Animation fadeOut = new AlphaAnimation(1,0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(1000);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationEnd(Animation animation) {
+            }
+            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationStart(Animation animation) {}
+        });
+        page.startAnimation(fadeOut);
     }
 }
