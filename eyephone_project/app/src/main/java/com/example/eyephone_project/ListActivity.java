@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,12 +28,15 @@ public class ListActivity extends AppCompatActivity {
     private String[] SimilarKey = new String[7];
     private String[] titleArray = new String[7];
     private String[] keyArray = new String[7];
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MainActivity.safebar = 400;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        MainActivity.viewPoint = findViewById(R.id.view_point);
         Intent intent = getIntent();
+
+
         titleArray = intent.getExtras().getStringArray("title");
         keyArray = intent.getExtras().getStringArray("key");
         String keyvalue = intent.getExtras().getString("key2");
@@ -67,9 +72,12 @@ public class ListActivity extends AppCompatActivity {
         }
 
         adapter.notifyDataSetChanged();
+
     }
     public void setarray(List<Bbs> datas) {
         System.out.println("**************************************");
         this.datas = datas;
     }
+
+
 }

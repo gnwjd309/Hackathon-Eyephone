@@ -1,2 +1,4 @@
+include ':libgaze-release'
+include ':gazetracker-release'
 include ':app'
 rootProject.name = "eyephone_project"

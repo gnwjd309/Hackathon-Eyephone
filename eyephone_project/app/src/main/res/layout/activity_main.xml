@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -23,5 +29,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start"/>
+        <Button
+            android:id="@+id/btncali"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Setting" />
     </LinearLayout>
 </LinearLayout>
+    <com.example.eyephone_project.PointView
+        android:id="@+id/view_point"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.example.eyephone_project.CalibrationViewer
+        android:id="@+id/view_calibration"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
