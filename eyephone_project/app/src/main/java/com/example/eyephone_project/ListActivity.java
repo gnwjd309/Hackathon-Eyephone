@@ -29,8 +29,10 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MainActivity.safebar=200;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        MainActivity.viewPoint = findViewById(R.id.view_point);
         Intent intent = getIntent();
         titleArray = intent.getExtras().getStringArray("title");
         keyArray = intent.getExtras().getStringArray("key");

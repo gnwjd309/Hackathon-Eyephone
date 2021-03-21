@@ -49,7 +49,7 @@ public class ReadNewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_readnews);
-
+        MainActivity.viewPoint = findViewById(R.id.view_point);
         Intent intent = getIntent();
         keyvalue = intent.getExtras().getString("key");
         System.out.println(Dao.datas.size());
