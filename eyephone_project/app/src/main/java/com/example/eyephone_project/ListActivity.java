@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ public class ListActivity extends AppCompatActivity {
     private TextView dateText;
     private ListView listview ;
     private ListViewAdapter adapter;
+    private Button btnmode;
     List<Bbs> datas = new ArrayList<>();
     private String[] SimilarTitle = new String[7];
     private String[] SimilarKey = new String[7];
@@ -29,10 +32,13 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MainActivity.safebar=200;
+        MainActivity.safebar=100;
+        MainActivity.pagenum=1;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        btnmode = (Button) findViewById(R.id.button1);
         MainActivity.viewPoint = findViewById(R.id.view_point);
+
         Intent intent = getIntent();
         titleArray = intent.getExtras().getStringArray("title");
         keyArray = intent.getExtras().getStringArray("key");
@@ -69,7 +75,20 @@ public class ListActivity extends AppCompatActivity {
         }
 
         adapter.notifyDataSetChanged();
+        btnmode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(MainActivity.mode==0){
+                    MainActivity.mode=1;
+                }
+                else if (MainActivity.mode==1){
+                    MainActivity.mode=0;
+                }
+            }
+
+        });
     }
+
     public void setarray(List<Bbs> datas) {
         System.out.println("**************************************");
         this.datas = datas;

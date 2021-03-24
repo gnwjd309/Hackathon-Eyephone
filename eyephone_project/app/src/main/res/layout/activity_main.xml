@@ -6,42 +6,77 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
     <LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".MainActivity">
-
-    <LinearLayout
-        android:id="@+id/page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/btnStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start"/>
-        <Button
-            android:id="@+id/btncali"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Startcali" />
-    </LinearLayout>
-</LinearLayout>
-    <com.example.eyephone_project.PointView
+        android:gravity="center"
+        tools:context=".MainActivity"
+        android:background="@drawable/border">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="right">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:text="Mode"
+                android:background="#00ff0000"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/page"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="center|bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/Title"
+                    android:layout_width="290dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btncali"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00ff0000"
+                    android:text="Startcali" />
+                <Button
+                    android:id="@+id/btnStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00ff0000"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <com.example.eyephone_project.PointView
         android:id="@+id/view_point"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
     <com.example.eyephone_project.CalibrationViewer
         android:id="@+id/view_calibration"
         android:visibility="invisible"

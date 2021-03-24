@@ -6,34 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
     <LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ListActivity">
-
-    <LinearLayout
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center">
-
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="left"
-            android:text="22 sat"
-            android:textSize="34dp" />
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ListActivity">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="right">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="285dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:text="22 sat"
+                android:textSize="34dp" />
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:text="Mode"
+                android:background="#00ff0000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7">
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
     <com.example.eyephone_project.PointView
         android:id="@+id/view_point"
         android:layout_width="match_parent"

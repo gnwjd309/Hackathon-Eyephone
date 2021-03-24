@@ -76,4 +76,3 @@ public class PointView extends View {
         //canvas.drawLine(position.x, 0, position.x, getHeight(), paint);
     }
 }
-

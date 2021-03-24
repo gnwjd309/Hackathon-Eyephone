@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -35,8 +37,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.kyleduo.switchbutton.SwitchButton;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,78 +78,108 @@ public class MainActivity extends AppCompatActivity {
     private CalibrationModeType calibrationType = CalibrationModeType.FIVE_POINT;
     private CalibrationViewer viewCalibration;
     static PointView viewPoint;
-    private Button btnStart,btncali;
+    private Button btnStart,btncali,btnmode;
     private TextView Title;
     private LinearLayout page;
     ListViewAdapter adapter;
     Dao dao=new Dao();
     String[] strTitle = new String[7];
     String[] strKey = new String[7];
+    float [] tempx = new float[10];
+    float [] tempy = new float[10];
+    float [] ltempx = new float[20];
+    float [] ltempy = new float[20];
     MyQueue xq = new MyQueue();
     MyQueue yq = new MyQueue();
-    static int count =0,safebar = 0;
+    MyQueue lxq = new MyQueue();
+    MyQueue lyq = new MyQueue();
+    static int count =0,safebar = 0,pagenum,count2=0,count3=0,Lsafebar=30,mode=1;
+    static int a1,a2,a3,a4,a5,a6,a7;
+    float display_x;
+    float display_y;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        pagenum = 0;
+        int a1 = 0, a3 = 0, a7 = 0;
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); // 디스플레이 메트릭스를 dm이라는 변수에 저장 dm = 디스플레이 메트릭스 형식
+        display_x = dm.widthPixels; // x축 픽셀 수 = x축의 길이
+        display_y = dm.heightPixels;
         btnStart = (Button) findViewById(R.id.btnStart);
         btncali = (Button) findViewById(R.id.btncali);
+        btnmode = (Button) findViewById(R.id.button1);
         Title = (TextView) findViewById(R.id.Title);
         page = findViewById(R.id.page);
         viewPoint = findViewById(R.id.view_point);
         viewCalibration = findViewById(R.id.view_calibration);
+        Title.setText("눈으로 세상의 소리를 들으시겠습니까?");
+        Animation fadeintitle = new AlphaAnimation(0.0f, 10.f);
+        fadeintitle.setDuration(10000);
+        Animation fadeintcali = new AlphaAnimation(0.0f, 10.f);
+        fadeintcali.setDuration(20000);
 
-        fadeInAndHideImage();
+
+        Title.startAnimation(fadeintitle);
+        btncali.startAnimation(fadeintcali);
 
         dao.LoadDao();
         checkPermission();
         initHandler();
         xq.newQueue(10);
         yq.newQueue(10);
+        lxq.newQueue(20);
+        lyq.newQueue(20);
         btncali.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startCalibration();
+                btnStart.setText("Start");
+                Animation fadeintstart = new AlphaAnimation(0.0f, 10.f);
+                fadeintstart.setDuration(10000);
+                btnStart.startAnimation(fadeintstart);
             }
         });
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ListActivity.class);
 
                 System.out.println(dao.datas.size());
-                for(int i=0;i<7;i++) {
-                    Bbs b=dao.datas.get(i);
+                for (int i = 0; i < 7; i++) {
+                    Bbs b = dao.datas.get(i);
                     strTitle[i] = b.title;
                     strKey[i] = b.key;
-                    System.out.println("key : "+strKey[i]);
+                    System.out.println("key : " + strKey[i]);
                 }
 
                 intent.putExtra("title", strTitle);
                 intent.putExtra("key", strKey);
                 intent.putExtra("type", 1);
                 startActivity(intent);
-                fadeInAndHideImage();
-
+                overridePendingTransition(0, 0);
             }
         });
+        btnmode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mode==0){
+                    MainActivity.mode=1;
+                }
+                else if (mode==1){
+                    MainActivity.mode=0;
+                }
+            }
+
+        });
+    }
+    private void stopTracking() {
+        if (isGazeNonNull()) {
+            gazeTracker.stopTracking();
+        }
     }
 
-    private void fadeInAndHideImage() {
-        Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setInterpolator(new AccelerateInterpolator());
-        fadeIn.setDuration(1000);
-        fadeIn.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationEnd(Animation animation) {
-                page.setVisibility(View.VISIBLE);
-            }
-            public void onAnimationRepeat(Animation animation) {}
-            public void onAnimationStart(Animation animation) {}
-        });
-        page.startAnimation(fadeIn);
-    }
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Check permission status
@@ -325,7 +360,8 @@ public class MainActivity extends AppCompatActivity {
     private GazeCallback gazeCallback = new GazeCallback() {
         @Override
         public void onGaze(GazeInfo gazeInfo) {
-            if (isGazeNonNull()) {
+            if (isGazeNonNull() && mode==1) {
+
                 TrackingState state = gazeInfo.trackingState;
                 if (state == TrackingState.SUCCESS) {
                     hideTrackingWarning();
@@ -337,24 +373,106 @@ public class MainActivity extends AppCompatActivity {
                                 showGazePoint(filteredPoint[0], filteredPoint[1], gazeInfo.screenState);
                                 xq.enqueue(filteredPoint[0]);
                                 yq.enqueue(filteredPoint[1]);
+                                lxq.enqueue(filteredPoint[0]);
+                                lyq.enqueue(filteredPoint[1]);
                                 count=0;
-                                for(int i=1;i<10;i++){
-                                    if(xq.QArray[0]+70>xq.QArray[i] && xq.QArray[0]-70 < xq.QArray[i] && yq.QArray[0]+170>yq.QArray[i] && yq.QArray[0]-170 < yq.QArray[i]){
-                                        count++;
+                                count2=0;
+                                count3=0;
+
+                                if(pagenum==1) {
+
+                                    for (int i = 0; i < 10; i++) {
+                                        if (xq.QArray[0] + 70 > xq.QArray[i] && xq.QArray[0] - 70 < xq.QArray[i] && yq.QArray[0] + 100 > yq.QArray[i] && yq.QArray[0] - 100 < yq.QArray[i]) {
+                                            count++;
+                                        }
+                                    }
+                                    if (count > 7 && safebar < 0) {
+                                        Instrumentation inst = new Instrumentation();
+                                        long downTime = SystemClock.uptimeMillis();
+                                        long eventTime = SystemClock.uptimeMillis();
+                                        MotionEvent event = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, xq.QArray[0], yq.QArray[0], 0);
+                                        MotionEvent event2 = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, xq.QArray[0], yq.QArray[0], 0);
+                                        inst.sendPointerSync(event);
+                                        inst.sendPointerSync(event2);
+                                        System.out.println("%%%%%%%%%%%%%%%%%%%");
+                                        safebar = 20;
                                     }
                                 }
-                                if(count>7&&safebar<0) {
-                                    Instrumentation inst = new Instrumentation();
-                                    long downTime = SystemClock.uptimeMillis();
-                                    long eventTime = SystemClock.uptimeMillis();
-                                    MotionEvent event = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, xq.QArray[0],yq.QArray[0], 0);
-                                    MotionEvent event2 = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, xq.QArray[0], yq.QArray[0], 0);
-                                    inst.sendPointerSync(event);
-                                    inst.sendPointerSync(event2);
-                                    System.out.println("%%%%%%%%%%%%%%%%%%%");
-                                    safebar = 20;
+                                else if(pagenum==2){
+                                    tempy = yq.QArray;
+                                    Arrays.sort(tempy);
+                                    for (int i = 0; i < 10; i++) {
+                                        if (tempy[4] + 100 > yq.QArray[i] && tempy[4] - 100 < yq.QArray[i]) {
+                                            count2++;
+                                        }
+                                    }
+                                    if (count2 > 7 && safebar < 0) {
+                                        ltempx = lxq.QArray;
+                                        Arrays.sort(ltempx);
+                                        ltempy = lyq.QArray;
+                                        Arrays.sort(ltempy);
+                                        for (int i = 0; i < 20; i++) {
+                                            if (ltempx[10] + 70 > lxq.QArray[i] && ltempx[10] - 70 < lxq.QArray[i] && ltempy[10] + 100 > lyq.QArray[i] && ltempy[10] - 100 < lyq.QArray[i]) {
+                                                count3++;
+                                            }
+                                        }
+                                        System.out.println("========================"+count3);
+                                            if (count3 > 15 && Lsafebar < 0) {
+                                                Instrumentation inst = new Instrumentation();
+                                                long downTime = SystemClock.uptimeMillis();
+                                                long eventTime = SystemClock.uptimeMillis();
+                                                MotionEvent event = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, ltempx[10], ltempy[10], 0);
+                                                MotionEvent event2 = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, ltempx[10], ltempy[10], 0);
+                                                if (a2 == 1) {
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    ReadNewsActivity.newstext1.performLongClick();
+                                                } else if (a3 == 1) {
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    ReadNewsActivity.newstext2.performLongClick();
+                                                } else if (a4 == 1) {
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    ReadNewsActivity.newstext3.performLongClick();
+                                                } else if (a5 == 1) {
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    ReadNewsActivity.newstext4.performLongClick();
+                                                } else if (a6 == 1) {
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    inst.sendPointerSync(event);
+                                                    inst.sendPointerSync(event2);
+                                                    ReadNewsActivity.newstext5.performLongClick();
+                                                }
+                                                Lsafebar =150;
+
+                                            } else {
+                                                Instrumentation inst = new Instrumentation();
+                                                long downTime = SystemClock.uptimeMillis();
+                                                long eventTime = SystemClock.uptimeMillis();
+                                                MotionEvent event = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, tempx[4], tempy[4], 0);
+                                                MotionEvent event2 = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, tempx[4], tempy[4], 0);
+                                                inst.sendPointerSync(event);
+                                                inst.sendPointerSync(event2);
+                                                safebar = 7;
+                                            }
+
+                                    }
+                                    Lsafebar--;
+
                                 }
                                 safebar--;
+                                System.out.println(safebar);
                             }
                         } else {
                             showGazePoint(gazeInfo.x, gazeInfo.y, gazeInfo.screenState);
@@ -475,14 +593,14 @@ public class MainActivity extends AppCompatActivity {
         //showProgress();
         GazeDevice gazeDevice = new GazeDevice();
         if (gazeDevice.isCurrentDeviceFound()) {
-            // 돌린 기기의 device info가 있는지확인
+                // 돌린 기기의 device info가 있는지확인
             Log.d(TAG, "이 디바이스는 gazeinfo 설정이 필요 없습니다.");
         } else {
             // 예시입니다. SM-T720은 갤럭시탭 s5e 모델명
             gazeDevice.addDeviceInfo("SM-T720", -72f, -4f);
         }
 
-        String licenseKey = "dev_jzxa3apuumhbdj5me5s60kcrz4habqpxtytdek9l";
+        String licenseKey = "prod_ueltef3nn02lnmc6qcw0767cve13xp1i6rd93b36";
         GazeTracker.initGazeTracker(getApplicationContext(), gazeDevice, licenseKey, initializationCallback);
     }
     private void showToast(final String msg, final boolean isShort) {

@@ -6,154 +6,161 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
     <LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <LinearLayout
-        android:id="@+id/pagebottom"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <Button
-            android:id="@+id/btnbottom"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:gravity="bottom"
-            app:iconTint="#F6F4F4" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/page"
-        android:layout_width="380dp"
-        android:layout_height="0dp"
-        android:layout_weight="5"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@drawable/back">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="410dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/newstext1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
-                android:lineSpacingExtra="20dp"
-                android:textColor="@color/white"
-                android:textIsSelectable="true"
-                android:textSelectHandleLeft="@color/black"
-                android:textSelectHandleRight="@color/black"
-                android:textSize="24dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="410dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/newstext2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
-                android:lineSpacingExtra="20dp"
-                android:textColor="@color/white"
-                android:textIsSelectable="true"
-                android:textSelectHandleLeft="@color/black"
-                android:textSelectHandleRight="@color/black"
-                android:textSize="24dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="410dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/newstext3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
-                android:lineSpacingExtra="20dp"
-                android:textColor="@color/white"
-                android:textIsSelectable="true"
-                android:textSelectHandleLeft="@color/black"
-                android:textSelectHandleRight="@color/black"
-                android:textSize="24dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="410dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/newstext4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
-                android:lineSpacingExtra="20dp"
-                android:textColor="@color/white"
-                android:textIsSelectable="true"
-                android:textSelectHandleLeft="@color/black"
-                android:textSelectHandleRight="@color/black"
-                android:textSize="24dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="410dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/newstext5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
-                android:lineSpacingExtra="20dp"
-                android:textColor="@color/white"
-                android:textIsSelectable="true"
-                android:textSelectHandleLeft="@color/black"
-                android:textSelectHandleRight="@color/black"
-                android:textSize="24dp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/pagetop"
-        android:layout_width="410dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btntop"
+            android:id="@+id/pagebottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:gravity="top" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnbottom"
+                android:layout_width="348dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/white"
+                android:gravity="bottom|center_horizontal"
+                android:textColor="@color/gray2"
+                android:textSize="35dp"
+                app:iconTint="#F6F4F4" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:text="Mode"
+                android:background="#00ff0000"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/page"
+            android:layout_width="380dp"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="410dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/newstext1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:lineSpacingExtra="20dp"
+                    android:textIsSelectable="true"
+                    android:textSelectHandleLeft="@color/black"
+                    android:textSelectHandleRight="@color/black"
+                    android:textSize="24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="410dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/newstext2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:lineSpacingExtra="20dp"
+                    android:textIsSelectable="true"
+                    android:textSelectHandleLeft="@color/black"
+                    android:textSelectHandleRight="@color/black"
+                    android:textSize="24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="410dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/newstext3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:lineSpacingExtra="20dp"
+                    android:textIsSelectable="true"
+                    android:textSelectHandleLeft="@color/black"
+                    android:textSelectHandleRight="@color/black"
+                    android:textSize="24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="410dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/newstext4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:lineSpacingExtra="20dp"
+                    android:textIsSelectable="true"
+                    android:textSelectHandleLeft="@color/black"
+                    android:textSelectHandleRight="@color/black"
+                    android:textSize="24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="410dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/newstext5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:lineSpacingExtra="20dp"
+                    android:textIsSelectable="true"
+                    android:textSelectHandleLeft="@color/black"
+                    android:textSelectHandleRight="@color/black"
+                    android:textSize="24dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pagetop"
+            android:layout_width="410dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btntop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/white"
+                android:gravity="top|center_horizontal"
+                android:textColor="@color/gray2"
+                android:textSize="35dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
     <com.example.eyephone_project.PointView
         android:id="@+id/view_point"
         android:layout_width="match_parent"

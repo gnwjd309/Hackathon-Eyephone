@@ -3,6 +3,7 @@ package com.example.eyephone_project;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.PaintDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -55,9 +56,6 @@ public class ListViewAdapter extends BaseAdapter {
 
         titleTextView = (TextView) convertView.findViewById(R.id.newstitle);
         titleTextView.getShadowRadius();
-        //titleTextView.setSingleLine(true);
-        //titleTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        //titleTextView.setSelected(true);
 
         ListViewItem listViewItem = listViewItemList.get(position);
 
@@ -69,8 +67,6 @@ public class ListViewAdapter extends BaseAdapter {
                 Toast.makeText(v.getContext(), "key value : " + keyvalue[pos], Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(v.getContext(), ReadNewsActivity.class);
                 intent.putExtra("key", keyvalue[pos]);
-                //v.setBackgroundColor(Color.parseColor("#D5D5D5"));
-
                 v.getContext().startActivity(intent);
             }
         });
